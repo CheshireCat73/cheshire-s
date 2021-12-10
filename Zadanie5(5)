@@ -1,0 +1,17 @@
+#include <iostream>
+#include <math.h> //Подключение библиотек
+#include <stdio.h>
+int a,b,c,d,h,f,s,p,o; //Объявление переменных
+double t,r,g;
+int main(){ //Начальная точка программы
+    printf("Введите координаты вершин треугольника(x1,y1,x2,y2,x3,y3)\n"); //Ввод координат пользователем 
+    scanf("%d%d%d%d%d%d",&a,&b,&c,&d,&h,&f); //Считывание значений переменных
+    t=(sqrtf(((c-a)*(c-a))+((d-b)*(d-b))));
+    r=(sqrtf(((h-c)*(h-c))+((f-d)*(f-d))));
+    g=(sqrtf(((h-a)*(h-a))+((f-b)*(f-b))));
+    p=(t+r+g);
+    o=((t+r+g)/2);
+    s=(sqrtf(o*(o-t)*(o-r)*(o-g)));
+    printf("%d\n%d\n",p,s); 
+    return 0;
+}

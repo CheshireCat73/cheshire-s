@@ -1,0 +1,27 @@
+#include <stdio.h> //Подключение библиотек
+int i,j,c,d,p[]={12,18,16,11,14,17,13,15}; //Объявление переменных и массива 
+int n=sizeof(p)/sizeof(int); //Определение размера массива
+int main(){ 
+    d=n/2;
+    while (d>0){
+        i=d;
+        while (i<n){ 
+            c=p[i];
+            j=i;
+            while(j>=d){
+                if(c<p[j-d]){
+                    p[j]=p[j-d];
+                    j=j-d;}
+                else break;
+            }
+            p[j]=c;
+            i++;
+        }
+        j=j-d;
+        d=d/2;
+    }
+    for(i=0;i<n;i++){
+        printf("p[%d]=%d\n",i,p[i]); //Вывод массива на экран
+    return 0;
+    }
+}

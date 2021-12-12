@@ -1,0 +1,17 @@
+#include <locale.h>
+#include <iostream>//Подключение библиотек
+#include <stdio.h>
+int main(){ 
+    int N,K;
+    setlocale(LC_ALL, "Russian");
+    printf("Введите числа N(номер дня недели),K\n"); //Ввод значений пользователем 
+    scanf("%d%d",&N,&K);
+    for(int i=1; i<K;i++)} //Подсчет номера дня недели, начиная с 1.
+        N+=1;
+        if(N==8) {//Если значение превышает 7, отсчет идет снова с 1.
+            N=1;
+        }
+    }
+    printf("%d\n", N);
+    return 0;
+}

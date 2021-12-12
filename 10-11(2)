@@ -20,8 +20,8 @@ int main(){
         j=j-d;
         d=d/2;
     }
-    for(i=0;i<n;i++){
-        printf("p[%d]=%d\n",i,p[i]); //Вывод массива на экран
-    return 0;
+    for(d=0;d<n;d++){
+        printf("p[%d]=%d\n",d,p[d]); //Вывод массива на экран
     }
+    return 0;
 }

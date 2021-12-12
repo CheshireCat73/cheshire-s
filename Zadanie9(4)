@@ -1,0 +1,13 @@
+#include <locale.h>
+#include <iostream>//Подключение библиотек
+#include <stdio.h>
+int main(){ 
+    int A,B,C,s,c,h,v;
+    setlocale(LC_ALL, "Russian");
+    printf("Введите A,B,C\n"); //Ввод значений пользователем 
+    scanf("%d%d%d",&A,&B,&C);
+    s=((A/C)*(B/C)*C*C);
+    h=((A*B)-s);
+    printf("%d\n%d\n",s,h);
+    return 0;
+}

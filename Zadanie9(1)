@@ -1,0 +1,10 @@
+#include <locale.h>
+#include <iostream>//Подключение библиотек
+#include <stdio.h>
+int main(){
+    int s,n;
+    printf("Введите число N\n");//Ввод значений пользователем 
+    scanf("%d",&n);
+    s=n%60;
+    printf("С начала последней минуты прошло секунд:\n");
+    printf("%d\n",s);}

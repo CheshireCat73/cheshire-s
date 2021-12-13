@@ -70,6 +70,10 @@ int main(){
             d=p[7];}
         if(b==9){
             d=p[8];}
+        if(b==0){
+            printf("%s",c);}
+        else;{
+            printf("%s%s",c,d);}
             
     }
         

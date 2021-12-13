@@ -1,9 +1,10 @@
 #include <locale.h>
 #include <iostream>//Подключение библиотек
 #include <stdio.h>
+#include <string>
 int main(){
     int i,a,b;
-    const char c,d;
+    std::string c,d;
     setlocale(LC_ALL, "Russian");
     printf("Число\n");//Ввод значений пользователем 
     scanf("%d",&i);

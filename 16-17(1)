@@ -1,0 +1,34 @@
+#include <locale.h>
+#include <iostream>
+#include <stdio.h> //Подключение библиотек
+void sort(int*p, int a, int z){
+    int op=p[(a+z)/2];
+    int c;
+    int l=a;
+    int r=z;
+    for (;l<=r;){
+        for(;p[l]<op;){
+            l++;}
+        for(;p[r]>op;){
+            r--;}
+        if(l<=r){
+            c=p[l];
+            p[l]=p[r];
+            p[r]=c;
+            l++;
+            r--;
+        }
+    }
+    if(a<r){
+        sort(p,a,r);}
+    if(z>l){
+        sort(p,l,z);}
+}
+int main(){
+    setlocale(LC_ALL, "Russian");
+    int i,a=0,z=7,r=7,l=0,op,c,p[]={12,18,16,11,14,17,13,15};
+    int n=sizeof(p)/sizeof(int); //Определение размера массива
+        sort(p,a,r);
+     for(i=0;i<n;i++){
+        printf("p[%d]=%d\n",i,p[i]);} //Вывод массива на экран
+}

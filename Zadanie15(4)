@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+int Quarter(double x, double y) {
+    if (x > 0 && y > 0) {
+        return 1;
+    }
+    if (x < 0 && y > 0) {
+        return 2;
+    }
+    if (x < 0 && y < 0) {
+        return 3;
+    }
+    if (x > 0 && y < 0) {
+        return 4;
+    }
+}
+
+int main()
+{
+    double x, y;
+    for(int i = 0; i < 3; i++) {
+        cout << "Введите x и y:" << endl;
+        cin >> x;
+        cin >> y;
+        cout << Quarter(x, y) << "четверть" << endl;
+    }
+
+    return 0;
+}

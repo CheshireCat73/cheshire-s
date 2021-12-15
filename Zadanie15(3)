@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+double RingS(double R1, double R2) { //Объявление функции
+    double pi = 3.14; //Сокращаем пи
+    double S1 = pi * R1 * R1; //Пи*радиус в квадрате
+    double S2 = pi * R2 * R2;
+    return S1 - S2; //Площадь кольца
+}
+int main()
+{
+    int R1, R2;
+    for(int i = 0; i < 3; i++) { //Вызов функции
+        cout<<"Введите внешний радиус для кольца " << i + 1 << endl;
+        cin>>R1;
+        cout<<"Введите внутренний радиус для кольца " << i + 1 << endl;
+        cin>> R2;
+        cout<<"Площадь кольца между ними: " << RingS(R1, R2) << endl;
+    }
+    return 0;
+}

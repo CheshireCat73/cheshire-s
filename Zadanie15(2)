@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+int Sign(double X) {
+    if (X < 0) {
+        return -1;
+    }
+    if (X > 0) {
+        return 1;
+    }
+    if (X == 0) {
+        return 0;
+    }
+}
+int main()
+{
+    double A, B;
+    cout<<"Введите число A"<< endl;
+    cin>>A;
+    cout<<"Введите число B"<< endl;
+    cin>>B;
+    cout<< Sign(A) + Sign(B) << endl;
+    return 0;
+}

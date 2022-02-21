@@ -1,0 +1,66 @@
+#include <stdio.h> //Подключение библиотек
+#include <iostream>
+using namespace std;
+int N=10;
+class Stack{ // объявление класса
+private: // закрытые члены класса
+    int *arr;
+    int h; // вершина head
+public: // открытые члены класса
+    Stack(){ // конструктор по умолчанию
+        h=-1;
+        arr= new int[N];
+    }
+    Stack(int m){ // конструктор с параметром 
+        h=-1;
+        arr=new int[m];
+    }
+    ~Stack(){ // деструктор
+        delete[] arr;
+    }
+    void push(int a){ // фуекция добавления элемента
+        if (h==N-1){
+            cout <<"Переполнен"<< endl;
+        }
+        else {
+            h++;
+            arr[h]=a;
+        }
+            
+        }
+    void pop(){ // функция извлечения элемента 
+        if (h>=0){
+            cout << arr[h];
+            h--;
+        }
+        else{
+            cout << "Пуст";
+            
+        }
+    }
+};
+
+int main(){
+    int zn;
+    bool r;
+    cout << "Сколько значенмй в стэке? ";
+    cin >> N;
+    Stack one(N);
+    do{
+        cout <<" Для добавление введите 1, для извлечения 0: ";
+        cin >> r;
+        if (r){
+            cout << "Введите значение ";
+            cin >> zn;
+            one.push(zn);
+        }
+        else{
+            cout << "Значение равно: ";
+            one.pop();
+            cout<< endl;
+        }
+    }
+    while (true);
+    return 0;
+    
+}

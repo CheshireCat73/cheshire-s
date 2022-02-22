@@ -1,0 +1,70 @@
+#include <stdio.h> //Подключение библиотек
+#include <iostream>
+using namespace std;
+int N=10;
+class Queue{ // объявление класса очередь
+private: // закрытые члены класса
+    int *arr;
+    int h; // вершина head
+    int t; // хвост tail
+public: // открытые члены класса
+    Queue(){ // конструктор по умолчанию
+        h=0;
+        t=0;
+        arr= new int[N];
+    }
+    Queue(int m){ // конструктор с параметром 
+        h=0;
+        t=0;
+        arr=new int[m];
+    }
+    ~Queue(){ // деструктор
+        delete[] arr;
+    }
+    void add(int a){ // функция добавления элемента add
+        if (h==(t+1)%N){ // проверяем, не достигла ли переменная конца очереди
+            cout <<"Очередь Переполнена"<< endl;
+        }
+        else {
+            arr[t]=a;
+            t=(t+1)%N;
+            
+        }
+            
+        }
+    void extr(){ // функция извлечения элемента extraction
+        if (h!=t){ // если голова и хвост указывают на один и тот же элемент, то очередь пуста
+            cout << arr[h];
+            h=(h+1)%N;
+        }
+        else{
+            cout << "Очередь пуста";
+            
+        }
+    }
+};
+
+int main(){
+    int zn;
+    bool r;
+    cout << "Сколько значений в очереди? ";
+    cin >> N;
+    Queue one(N);
+    do{
+        cout <<" Для добавление введите 1, для извлечения 0: ";
+        cin >> r;
+        if (r){
+            cout << "Введите значение ";
+            cin >> zn;
+            one.add(zn);
+        }
+        else{
+            cout << "Значение равно: ";
+            one.extr();
+            cout<< endl;
+        }
+    }
+    while (true);
+    return 0;
+    
+}

@@ -1,0 +1,25 @@
+//То, что должно работать, но оно это не делает.
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main(){
+    int i,n;
+    string x;
+    FILE *f;
+    f=fopen("ПР.txt", "a+");
+    for(i=0;i<5;i++){
+        cout<<"Введите название фильма: "; cin>>x;
+        char *fgets(char *x, int n, FILE *f); // запись в файл
+
+    }
+    fclose(f);
+    f=fopen("ПР.txt","r"); // открытие файла на чтение
+    while (!feof(f))
+         char *fputs(char *x, FILE *f);
+        //fscanf(f,"%s",&x); // считывание из файла
+        //cout<<"Название фильма: "<<x<<"\n";
+    fclose(f);
+    getchar(); return 0;
+    
+}

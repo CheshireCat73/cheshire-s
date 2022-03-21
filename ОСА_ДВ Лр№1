@@ -14,6 +14,7 @@ public: // открытые члены класса
     Stack(int m){ // конструктор с параметром 
         h=-1;
         arr=new int[m];
+        N=m;
     }
     ~Stack(){ // деструктор
         delete[] arr;
@@ -64,3 +65,4 @@ int main(){
     return 0;
     
 }
+

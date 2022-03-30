@@ -1,0 +1,106 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+struct bin_node
+{
+	int data;
+	struct bin_node* left;//указатель на левые и правые потомки дерева
+	struct bin_node* right;
+};
+struct bin_tree
+{
+	struct bin_node* root; //указатель на корень дерева
+	int count; //счет количества узлов
+};
+bin_tree* bin_create(void)//функция создания дерева
+{
+	bin_tree* tree = (bin_tree*)malloc(sizeof(bin_tree));
+	if (tree == NULL) //если не удлось выделить память возвращает ноль
+		return NULL;
+	tree->root = NULL;
+	tree->count = 0;
+	return tree;
+}
+int bin_search(const struct bin_tree* tree, int item)//функция поиска вершина дерева
+{
+	FILE* f = fopen("f.txt", "w");
+	if (f == NULL) return -1;
+	const struct bin_node* node;
+	if(tree == NULL) return -1;
+	node = tree->root; 
+	fprintf(f, "%d: ", item);
+	for (;;)
+	{
+		if (node == NULL) {//если вершина не найдена
+			fprintf(f, "Вершина не найдена\n ");
+			fclose(f);
+			return 0;
+		} 
+		else if (item == node->data) { //если вершина найдена, возвращает 1
+			fprintf(f, "%d Вершина найдена\n ", item);
+			fclose(f);
+			return 1;
+		}
+		else if (item > node->data) { //если искомая вершина больше данной, идем вправо
+			fprintf(f, "%d ", node->data);
+			node = node->right;
+		}
+		else {
+			fprintf(f, "%d ", node->data);//если меньше, то влево
+			node = node->left;
+		} 
+	}
+	fprintf(f, "Вершина не найдена\n ");
+	fclose(f);
+}
+int bin_insert(struct bin_tree* tree, int item)//функция добавления вершин дереву
+{
+	struct bin_node* node, ** nee;
+	if(tree == NULL) return -1;
+	nee = &tree->root;
+	node = tree->root;
+	for (;;)
+	{
+		if (node == NULL) 
+		{
+			*nee = (bin_node*)malloc(sizeof * node); 
+			node = *nee; 
+		
+			if (node != NULL) //проверяет результат выделения памяти
+			{
+				node->data = item;
+				node->left = node->right = NULL;//если вершина совпадает с имеющейся, +1 к кол-ву вершин
+				tree->count++;
+				return 1;
+			}
+			else
+				return 0;
+		}
+		else if (item == node->data)
+			return 2;
+		else if (item > node->data)
+		{
+			nee = &node->right;//ищет подходящее место вершине
+			node = node->right;
+		}
+		else
+		{
+			nee = &node->left;//ищет подходящее место вершине
+			node = node->left;
+		}
+	}
+}
+int main() {
+	setlocale(LC_ALL,"RUS");
+	bin_tree* derevo = bin_create();//вызов функции создания дерева
+	int mas[13] = { 06,04,20,03,06,12,20,21,91,67,05,60,98 };
+	for (int i = 0; i < 13; i++) {
+		bin_insert(derevo, mas[i]);//заполенение дерева
+	}
+	int find;
+	printf("Введите значение для поиска\n");
+	scanf("%d", &find);
+	bin_search(derevo, find);
+	return 0;
+}

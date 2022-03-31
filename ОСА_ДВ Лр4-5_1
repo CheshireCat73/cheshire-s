@@ -11,7 +11,7 @@ struct bin_node
 struct bin_tree
 {
 	struct bin_node* root; //указатель на корень дерева
-	int count; //счет количества узлов
+	int count; //счет количества вершин
 };
 bin_tree* bin_create(void)//функция создания дерева
 {
@@ -22,13 +22,13 @@ bin_tree* bin_create(void)//функция создания дерева
 	tree->count = 0;
 	return tree;
 }
-int bin_search(const struct bin_tree* tree, int item)//функция поиска вершина дерева
+int bin_search(const struct bin_tree* tree, int item)//функция поиска заданной вершины
 {
 	FILE* f = fopen("f.txt", "w");
-	if (f == NULL) return -1;
+	if (f == NULL) return -1;//проверяет, открылся ли файл
 	const struct bin_node* node;
 	if(tree == NULL) return -1;
-	node = tree->root; 
+	node = tree->root; //присваивает адрес корня дерева
 	fprintf(f, "%d: ", item);
 	for (;;)
 	{
@@ -70,8 +70,8 @@ int bin_insert(struct bin_tree* tree, int item)//функция добавлен
 			if (node != NULL) //проверяет результат выделения памяти
 			{
 				node->data = item;
-				node->left = node->right = NULL;//если вершина совпадает с имеющейся, +1 к кол-ву вершин
-				tree->count++;
+				node->left = node->right = NULL;//справа и слева выделяем место для потомков
+				tree->count++;//+1 к кол-ву имеющихся вершин
 				return 1;
 			}
 			else
@@ -91,6 +91,12 @@ int bin_insert(struct bin_tree* tree, int item)//функция добавлен
 		}
 	}
 }
+void bin_print(struct bin_node* node, FILE* d) {//рекурсивная функция записи бинарного дерева
+	if (node == NULL)return;
+	bin_print(node->left,d);
+	fprintf(d,"%d ", node->data);
+	bin_print(node->right,d);	
+}
 int main() {
 	setlocale(LC_ALL,"RUS");
 	bin_tree* derevo = bin_create();//вызов функции создания дерева
@@ -102,5 +108,9 @@ int main() {
 	printf("Введите значение для поиска\n");
 	scanf("%d", &find);
 	bin_search(derevo, find);
+	FILE* d = fopen("Derevo.txt", "w");
+	if (d == NULL) return -1;
+	bin_print(derevo->root,d);
+	fclose(d);
 	return 0;
 }

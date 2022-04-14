@@ -1,39 +1,145 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-//using namespace std;
+#include <string.h>
+//clear
+//get_clean
+//add_elem
+//show_elem
+//show_all
+//
+#define N 10
+typedef struct Cinema {
+	bool is_free = true;
+	char film[40];
+	char session_time[40];
+	int price;
+	int vie;
+}Cinema;
+Cinema mas[N]; //массив
+void clear(int index) {
+	if (index < 0 || index>=N) {
+		printf("Некоректный индекс");
+		return;
+	}
+	mas[index].is_free = true;
+	for (int i = 0; i < 40; i++) {
+		mas[index].film[i] = '\0';
+		mas[index].session_time[i] = '\0';
+	}
+	mas[index].price=0;
+	mas[index].vie=0;
+}
+int get_clean() {
+	for (int i = 0; i < N; i++) {
+		if (mas[i].is_free == true) {
+			return i;
+		}
+	}
+}
+void add_elm(int index) {
+	if (index<0 || index>=N) {
+		printf("Ошибка.Выход за пределы массива");
+		return;
+	}
+	Cinema e;
+	// формируем запись е
+	printf("film="); scanf("%s", &e.film);
+	printf("session_time="); scanf("%s", &e.session_time);
+	printf("price="); scanf("%d", &e.price);
+	printf("vie="); scanf("%d", &e.vie);
+	// записываем запись е в файл
+	e.is_free = false;
+	mas[index] = e;
+}
+void show_elem(int index) {
+	if (index<0 || index>=N) {
+		printf("Ошибка.Выход за пределы массива");
+		return;
+	}
+		printf("%s %s %d %d\n", mas[index].film, mas[index].session_time, mas[index].price, mas[index].vie);
+}
+void show_all() {
+	for (int i = 0; i < N; i++) {
+		if (mas[i].is_free == false) {
+			show_elem(i);
+		}
+	}
+}
 
-typedef struct klient {
- char name [40]; 
- char for_name [40];
- float geld;
-}klient;
-void main () 
+//int search_near(char film[], int price)
+//{
+//	int head = 0;
+//	int tail = N - 1;
+//
+//	int index = 0;
+//	while (head <= tail)
+//	{
+//		index = (tail + head) / 2;
+//		if (strcmp(mas[index].film, film) == 0)
+//			break;
+//		else if (strcmp(mas[index].film, film) > 0)
+//			tail = index - 1;
+//		else
+//			head = index + 1;
+//	}
+//	int k = index;
+//	for (int i = 0; i < N; i++) {
+//		if (strcmp(mas[index].film, mas[i].film) == 0) {
+//			if ()
+//		}
+//	}
+//	int index1 = 0;
+//	head = 0;
+//	tail = N - 1;
+//
+//	while (head <= tail)
+//	{
+//		index1 = (tail + head) / 2;
+//		if (strcmp(mas[index].film, mas[index1].film) == 0 && mas[index].price<=price)
+//			return (index);
+//		else if (strcmp(mas[index].film, film) > 0)
+//			tail = index - 1;
+//		else
+//			head = index + 1;
+//	}
+//	return (index);
+//}
+
+void main()
 {
- FILE *f; // указатель связанный с файлом
- klient e; // переменная
- klient mas[10]; //массив
- int i;
- //открываем файл
- f=fopen("f.dat", "wb");
- if (f==NULL) return; // если при 
- //открытии файла возникает ошибка, то выходим из функции
- for(i=1; i<=10;i++){
- // формируем запись е
- printf("name="); scanf("%s",&e.name);
- printf("for_name="); scanf("%s",&e. for_name);
- printf("geld="); scanf("%f",e.geld);
- // записываем запись е в файл
- fwrite(&e, sizeof(klient),1,f);
- if (ferror(f)) return;
- }
- fclose(f);
- //чтение записей из файла
- f=fopen("f.dat", "rb");
- if (f==NULL) return; // если при
- // открытии файла возникает ошибка, то выходим из функции
- i=0;
- while(!feof(f)&&i<=10) {
- fread(&mas[i], sizeof(klient), 1, f);
- i++;
- }
- fclose(f);
+	printf("%d\n", get_clean());
+	add_elm(get_clean());
+	add_elm(5);
+	printf("%d\n", get_clean());
+	show_all();
+	//FILE* f; // указатель связанный с файлом
+	//Cinema e;
+	//int i;
+	//f = fopen("f.dat", "wb");
+	//if (f == NULL) return; // если при 
+	////открытии файла возникает ошибка, то выходим из функции
+	//for (i = 1; i <= 3; i++) {
+	//	// формируем запись е
+	//	printf("film="); scanf("%s", &e.film);
+	//	printf("session_time="); scanf("%s", &e.session_time);
+	//	printf("price="); scanf("%f", &e.price);
+	//	printf("vie="); scanf("%f", &e.vie);
+	//	// записываем запись е в файл
+	//	fwrite(&e, sizeof(Cinema), 1, f);
+	//	if (ferror(f)) return;
+	//}
+	//fclose(f);
+ 
+
+	//чтение записей из файла
+	//f = fopen("f.dat", "rb");
+	//if (f == NULL) return; // если при
+	//// открытии файла возникает ошибка, то выходим из функции
+	//i = 1;
+	//while (!feof(f) && i <= 3) {
+	//	fread(&mas[i], sizeof(Cinema), 1, f);
+	//	printf("%s %s %f %d\n", mas[i].film, mas[i].session_time,mas[i].price,mas[i].vie);
+	//	i++;
+	//}
+	//fclose(f);
 }

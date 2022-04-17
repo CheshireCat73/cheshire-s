@@ -1,27 +1,25 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <locale.h>
 #include <string.h>
-//clear
-//get_clean
-//add_elem
-//show_elem
-//show_all
-//
-#define N 10
-typedef struct Cinema {
+#include <cmath>
+#define N 5
+typedef struct Cinema {//структура
 	bool is_free = true;
 	char film[40];
 	char session_time[40];
 	int price;
 	int vie;
+	char min[40];
 }Cinema;
-Cinema mas[N]; //массив
-void clear(int index) {
+Cinema mas[N]; //массив киносеансов
+
+void clear(int index) {//функция очистки структурной переменной
 	if (index < 0 || index>=N) {
 		printf("Некоректный индекс");
 		return;
 	}
-	mas[index].is_free = true;
+	mas[index].is_free = true;//проверка, пуста ли переменная
 	for (int i = 0; i < 40; i++) {
 		mas[index].film[i] = '\0';
 		mas[index].session_time[i] = '\0';
@@ -29,117 +27,332 @@ void clear(int index) {
 	mas[index].price=0;
 	mas[index].vie=0;
 }
-int get_clean() {
+int get_clean() {//возвращает индекс первой свободной структурной переменной
 	for (int i = 0; i < N; i++) {
 		if (mas[i].is_free == true) {
 			return i;
 		}
 	}
 }
-void add_elm(int index) {
-	if (index<0 || index>=N) {
-		printf("Ошибка.Выход за пределы массива");
+void add_elm(int index) {//добавление элемента на место, необходимое пользователю
+	if (index<0 || index>=N) {//проверка на некорректные индексы
+		printf("Ошибка.Выход за пределы массива\n");
 		return;
 	}
 	Cinema e;
-	// формируем запись е
+	// формируем запись e
 	printf("film="); scanf("%s", &e.film);
 	printf("session_time="); scanf("%s", &e.session_time);
 	printf("price="); scanf("%d", &e.price);
 	printf("vie="); scanf("%d", &e.vie);
-	// записываем запись е в файл
 	e.is_free = false;
 	mas[index] = e;
 }
-void show_elem(int index) {
-	if (index<0 || index>=N) {
-		printf("Ошибка.Выход за пределы массива");
+void show_elem(int index) {//выводит на экран заданный элемент
+	if (index<0 || index>=N) {//проверка на некорректные индексы
+		printf("Ошибка.Выход за пределы массива\n");
 		return;
 	}
 		printf("%s %s %d %d\n", mas[index].film, mas[index].session_time, mas[index].price, mas[index].vie);
 }
-void show_all() {
+void show_all() {//выводит на экран все элементы 
 	for (int i = 0; i < N; i++) {
 		if (mas[i].is_free == false) {
 			show_elem(i);
 		}
 	}
 }
+void sort_asc(int m) // сортировка по возрастанию
+{
+	Cinema replace;
+	if (m == 1) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (strcmp(mas[j].film, mas[j + 1].film) > 0) //сравнивает(строки) значения, чтобы понять, на своем ли месте элемент
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+	if (m == 2) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (strcmp(mas[j].session_time, mas[j + 1].session_time) > 0) //сравнивает(строки) значения, чтобы понять, на своем ли месте элемент
+				{
+					replace = mas[j + 1];//меняет элементы местами
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+	if (m == 3) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (mas[j].price > mas[j + 1].price) //сравнивает значения, чтобы понять, на своем ли месте элемент
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+	if (m == 4) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (mas[j].vie > mas[j + 1].vie) //сравнивает значения, чтобы понять, на своем ли месте элемент
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+}
+void sort_desc(int m) // сортировка по убыванию
+{
+	Cinema replace;
+	if (m == 1) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (strcmp(mas[j].film, mas[j + 1].film) < 0) //сравнивает(строки) значения, чтобы понять, на своем ли месте элемент
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+	if (m == 2) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (strcmp(mas[j].session_time, mas[j + 1].session_time) < 0) //сравнивает(строки) значения, чтобы понять, на своем ли месте элемент
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+	if (m == 3) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (mas[j].price< mas[j + 1].price) //сравнивает значения, чтобы понять, на своем ли месте фильм
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+	if (m == 4) {
+		for (int i = 0; i < N - 1; i++)//отвечает за прохождение по массиву
+		{
+			for (int j = 0; j < N - i - 1; j++)//отвечает за перебор индексов
+			{
+				if (mas[j].vie < mas[j + 1].vie) //сравнивает значения, чтобы понять, на своем ли месте фильм
+				{
+					replace = mas[j + 1];
+					mas[j + 1] = mas[j];
+					mas[j] = replace;
+				}
+			}
+		}
+	}
+}
 
-//int search_near(char film[], int price)
-//{
-//	int head = 0;
-//	int tail = N - 1;
-//
-//	int index = 0;
-//	while (head <= tail)
-//	{
-//		index = (tail + head) / 2;
-//		if (strcmp(mas[index].film, film) == 0)
-//			break;
-//		else if (strcmp(mas[index].film, film) > 0)
-//			tail = index - 1;
-//		else
-//			head = index + 1;
-//	}
-//	int k = index;
-//	for (int i = 0; i < N; i++) {
-//		if (strcmp(mas[index].film, mas[i].film) == 0) {
-//			if ()
-//		}
-//	}
-//	int index1 = 0;
-//	head = 0;
-//	tail = N - 1;
-//
-//	while (head <= tail)
-//	{
-//		index1 = (tail + head) / 2;
-//		if (strcmp(mas[index].film, mas[index1].film) == 0 && mas[index].price<=price)
-//			return (index);
-//		else if (strcmp(mas[index].film, film) > 0)
-//			tail = index - 1;
-//		else
-//			head = index + 1;
-//	}
-//	return (index);
-//}
+int search_near(char film[], int price)//поиск заданного элемента или близкого к нему
+{
+	int nearest_film = 0;
+	int similars_max = 0;
+	for (int i = 0; i < N; i++) {
+		int similars_count = 0;
+		for (int j = 0; j < 40; j++) {
+			if (mas[i].film[j] == film[j]) {//поиск осущетсвляется по максимальному кол-ву одинаковых букв 
+				similars_count++;//счетчик кол-ва одинаковых букв
+			}
+			else {
+				break;
+			}
+		}
+		if (similars_count > similars_max) {
+			similars_max = similars_count;
+			nearest_film = i;//выводит индекс ближайщего элемента 
+		}
+	}
 
+	int k = nearest_film;
+	for (int i = 0; i < N; i++) {
+		if (strcmp(mas[k].film, mas[i].film) == 0 && abs(mas[k].price-price)>abs(mas[i].price-price)) {//находим ближайшую цену данному элементу
+			k = i;
+		}
+	}
+	return (k);
+}
+int search_min(int m) {//поиск минимального элемента по заданному пользователем полю
+	int i, index=-1;
+	Cinema minimum = mas[0];//за минимальный элемент принимаем первый элемент массива
+	for (i = 0; i < N; i++) {
+		if (mas[i].is_free == true) {
+			continue;
+		}
+		if (m == 1) {
+			if (strcmp(minimum.film, mas[i].film) > 0) {//сравниваем элементы в поисках минимального
+				minimum = mas[i];
+				index = i;
+			}
+		}
+		if (m == 2) {
+			if (strcmp(minimum.session_time, mas[i].session_time) > 0) {
+				minimum = mas[i];
+				index = i;
+			}
+		}
+		if (m == 3) {
+			if (minimum.price > mas[i].price) {
+				minimum = mas[i];
+				index = i;
+			}
+		}
+		if (m == 4) {
+			if (minimum.vie > mas[i].vie) {
+				minimum = mas[i];
+				index = i;
+			}
+		}
+	}
+	return index;
+}
+void file_read() {
+	FILE* f;
+	int i;
+	f = fopen("f.dat", "rb");
+	if (f == NULL) return; // если при открытии файла возникает ошибка, то выходим из функции
+	i = 1;
+	while (!feof(f) && i <= N) {
+		fread(&mas[i-1], sizeof(Cinema), 1, f);//считывает список 
+		printf("%s %s %d %d\n", mas[i-1].film, mas[i-1].session_time,mas[i-1].price,mas[i-1].vie);//и выводит его на экран
+		mas[i - 1].is_free=false;//только не пустые элементы
+		i++;
+	}
+	fclose(f);
+}
+void file_write() {
+	FILE* f; // указатель связанный с файлом
+	int i;
+	f = fopen("f.dat", "wb");
+	if (f == NULL) return; // если при открытии файла возникает ошибка, то выходим из функции
+	for (i = 1; i <= N; i++) {
+		fwrite(&mas[i-1], sizeof(Cinema), 1, f); //записывает массив в файл
+		if (ferror(f)) return;
+	}
+	fclose(f);
+}
 void main()
 {
-	printf("%d\n", get_clean());
-	add_elm(get_clean());
-	add_elm(5);
-	printf("%d\n", get_clean());
-	show_all();
-	//FILE* f; // указатель связанный с файлом
-	//Cinema e;
-	//int i;
-	//f = fopen("f.dat", "wb");
-	//if (f == NULL) return; // если при 
-	////открытии файла возникает ошибка, то выходим из функции
-	//for (i = 1; i <= 3; i++) {
-	//	// формируем запись е
-	//	printf("film="); scanf("%s", &e.film);
-	//	printf("session_time="); scanf("%s", &e.session_time);
-	//	printf("price="); scanf("%f", &e.price);
-	//	printf("vie="); scanf("%f", &e.vie);
-	//	// записываем запись е в файл
-	//	fwrite(&e, sizeof(Cinema), 1, f);
-	//	if (ferror(f)) return;
-	//}
-	//fclose(f);
- 
-
-	//чтение записей из файла
-	//f = fopen("f.dat", "rb");
-	//if (f == NULL) return; // если при
-	//// открытии файла возникает ошибка, то выходим из функции
-	//i = 1;
-	//while (!feof(f) && i <= 3) {
-	//	fread(&mas[i], sizeof(Cinema), 1, f);
-	//	printf("%s %s %f %d\n", mas[i].film, mas[i].session_time,mas[i].price,mas[i].vie);
-	//	i++;
-	//}
-	//fclose(f);
+	setlocale(LC_ALL,"RUS");
+	Cinema user;
+	int number, index, nomer, found;
+	char poisk[40];
+	do {
+		printf("Введите, чтобы \n");
+		printf("1 - Вывести элемент на экран\n");
+		printf("2 - Вывести все элементы на экран \n");
+		printf("3 - Очистить структурную переменную\n");
+		printf("4 - Начать поиск свободной структурной переменной\n");
+		printf("5 - Ввести элемент с клавиатуры\n");
+		printf("6 - Начать поиск элемента или ближайшего ему по значению\n");
+		printf("7 - Начать поиск минимального элемента\n");
+		printf("8 - Отсортировать массив по возрастанию\n");
+		printf("9 - Отсортировать массив по убыванию\n");
+		printf("10 - Считать файл с содержимым базы данных\n");
+		printf("11 - Записать в файл содержимое базы данных\n");
+		printf("0 - Закончить работу с программой\n");
+		scanf("%d", &number);
+		if (number == 1) {
+			printf("Введите индекс элемента \n");
+			scanf("%d", &index);
+			show_elem(index - 1);
+			printf("\n");
+		}
+		if (number == 2) {
+			show_all();
+			printf("\n");
+		}
+		if (number == 3) {
+			printf("Введите индекс переменной, которую надо очистить \n");
+			scanf("%d", &index);
+			clear(index - 1);
+		}
+		if (number == 4) {
+			printf("Индекс свободной структурной переменной %d\n",get_clean()+1);
+		}
+		if (number == 5) {
+			printf("Введите, какой по счету элемент добавить \n");
+			scanf("%d", &index);
+			add_elm(index - 1);
+		}
+		if (number == 6) {
+			printf("Введите элемент, который необходимо найти(фильм и стоимость) \n");
+			scanf("%s %d", &poisk, &nomer);
+			found=search_near(poisk, nomer);
+			show_elem(found);
+		}
+		if (number == 7) {
+			printf("1-фильм\n 2-время сеанса \n 3-стоимость билета \n 4-кол-во зрителей\n");
+			scanf("%d", &nomer);
+			printf("Минимальный элемент равен \n"); 
+			found = search_min(nomer);
+			if (found != -1) {
+				show_elem(found);
+			}
+			else {
+				printf("Минимальный элемент не найден\n");
+			}
+			printf("\n");
+		}
+		if (number == 8) {
+			printf("1-фильм\n 2-время сеанса \n 3-стоимость билета \n 4-кол-во зрителей\n");
+			scanf("%d", &nomer);
+			sort_asc(nomer);
+			printf("\n");
+		}
+		if (number == 9) {
+			printf("1-фильм\n 2-время сеанса \n 3-стоимость билета \n 4-кол-во зрителей\n");
+			scanf("%d", &nomer);
+			sort_desc(nomer);
+			printf("\n");
+		}
+		if (number == 10) {
+			file_read();
+			printf("\n");
+		}
+		if (number == 11) {
+			file_write();
+			printf("Данные успешно записаны в файл \n");
+		}
+	} while (number != 0);
+	printf("Спасибо за использование программы :)\n");
 }

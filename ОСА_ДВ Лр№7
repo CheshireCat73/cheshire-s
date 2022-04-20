@@ -1,0 +1,75 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h> //Подключение библиотек
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+const int N = 14; //Количество вершин в графе
+int arr[N][N] = { {0} };
+int q, p, i, k, temp=0;
+int pass[N] = {-1};
+bool visited[N]; //Массив пройденных вершин
+int VON_PUNKT[N]; //Массив соседних родительских вершин
+int main()
+{
+	setlocale(LC_ALL, "");
+	FILE* f = fopen("C:/Users/Юлия/Documents/Институт/ОСА_ДВ/Лр/Лр 7/f.txt", "r");
+	if (f == NULL) return -1;
+	for (int i = 0; i < 30; i++)
+	{
+		fscanf(f, "%d %d %d", &p, &temp, &q);
+		arr[p - 1][q - 1] = temp;
+		arr[q - 1][p - 1] = temp;
+	}
+	fclose(f);
+	int start;
+	for (int i = 0; i < N; i++)
+	{
+		visited[i] = 0;
+	}
+	cout << "Из какой вершины начинается путь? ";
+	cin >> start;
+	start=start -1;
+	int end;
+	cout << "До какой точки рассчитать маршрут? ";
+	cin >> end;
+	end= end-1;
+	int schlange[N]; //очередь FIFO (First In First Out)
+	schlange[0] = start; //запись в очередь номера начальной вершины
+	visited[start] = 1;
+	VON_PUNKT[start] = -1;//отметка о включении этой вершины в очередь
+	int r = 0, w = 1;
+	while (r < w) //пока очередь не пуста
+	{
+		int besuch = schlange[r++]; //посещение вершины
+		//поиск инцидентных, непосещенных и отсутствующих в очереди вершин для 
+		//вершины besuch
+		for (int i = 0; i < N; i++)
+		{
+			if (!visited[i] && arr[besuch][i])
+			{
+				schlange[w++] = i;
+				VON_PUNKT[i] = besuch;//запись в очередь номера вершины
+				visited[i] = 1; //отметка о включении этой вершины в очередь
+			}
+		}
+	}
+	FILE* d = fopen("C:\\Users\\Юлия\\Documents\\Институт\\ОСА_ДВ\\Лр\\ЛР 7/d.txt", "w");
+	fprintf(d, "Путь:\n");
+	i = end;
+	//fprintf(d, "%d ",i + 1);
+	pass[0] = i;
+	k = 0;
+	while (i != start)
+	{
+		//fprintf (d,"%d ",VON_PUNKT[i] + 1);
+		i = VON_PUNKT[i];
+		k++;
+		pass[k] = i;
+	}
+	for (int i = k; i>=0; i--) {
+		fprintf(d, "%d ", pass[i]+1);
+	}
+	fclose(d);
+	return 0;
+}
+

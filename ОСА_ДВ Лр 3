@@ -1,0 +1,202 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+#include <string.h>
+#include <cmath>
+typedef struct Cinema {//структура
+	bool is_free = true;//индикатор того, очищена ли переменная
+	char film[40];//название фильма
+	char session_time[40];//время сеанса
+	int price;//цена билета
+	int vie;//кол-во зрителей
+}Cinema;
+struct node
+{
+	struct node* next=nullptr;
+	Cinema* value=nullptr;
+};
+struct list { 
+	node* head = nullptr; 
+};
+list cinema_list;
+void add_head(Cinema* value) {
+	node* new_node=new node;
+	new_node->value = value;
+	if (cinema_list.head == nullptr) {
+		cinema_list.head = new_node;
+	}
+	else {
+		new_node->next = cinema_list.head;
+		cinema_list.head = new_node;
+	}
+}
+void add_tail(Cinema* value) {
+	node* new_node = new node;
+	new_node->value = value;
+	if (cinema_list.head == nullptr) {
+		cinema_list.head = new_node;
+	}
+	else {
+		node* tmp = cinema_list.head;
+		while (tmp->next != nullptr) {
+			tmp = tmp->next;
+		}
+		tmp->next = new_node;
+	}
+}
+void del_head() {
+	if (cinema_list.head == nullptr) {
+		return;
+	}
+	node* tmp = cinema_list.head;
+	cinema_list.head = cinema_list.head->next;
+	delete tmp;
+}
+void del_tail() {
+	if (cinema_list.head == nullptr) {
+		return;
+	}
+	node* tmp = cinema_list.head;
+	if (cinema_list.head->next == nullptr) {
+		cinema_list.head = nullptr;
+		delete tmp;
+	}
+	else {
+		while (tmp->next->next != nullptr) {
+			tmp = tmp->next;
+		}
+		node* elem_for_del = tmp->next;
+		tmp->next = nullptr;
+		delete elem_for_del;
+	}
+}
+node* search(char film[]) {
+	if (cinema_list.head == nullptr) {
+		return nullptr;
+	}
+	node* tmp = cinema_list.head;
+	while (tmp != nullptr) {
+		if (strcmp(tmp->value->film, film) == 0) {
+			return tmp;
+		}
+		tmp = tmp->next;
+	}
+	return nullptr;
+}
+Cinema add_elm() {//добавление элемента на место, необходимое пользователю
+	Cinema e;
+	// формируем запись e
+	printf("film="); scanf("%s", &e.film);
+	printf("session_time="); scanf("%s", &e.session_time);
+	printf("price="); scanf("%d", &e.price);
+	printf("vie="); scanf("%d", &e.vie);
+	e.is_free = false;
+	return e;
+}
+void add_after(char film[],Cinema* x){
+	node* new_node = new node;
+	new_node->value = x;
+	node* found = search(film);
+	if (cinema_list.head == nullptr) {
+		cinema_list.head=new_node;
+		return;
+	}
+	new_node->next = found->next;
+	found->next = new_node;
+
+}
+void del_after(char film[]) {
+	node* found = search(film);
+	if (cinema_list.head == nullptr) {
+		return;
+	}
+	if (found->next == nullptr) {
+		return;
+	}
+	node* tmp = found;
+	node* elem_for_del = tmp->next;
+	found->next = elem_for_del->next;
+	delete elem_for_del;
+}
+void show_elem(Cinema*elem) {//выводит на экран заданный элемент
+	printf("%s %s %d %d\n", elem->film, elem->session_time, elem->price, elem->vie);
+}
+void show_all() {
+	if (cinema_list.head == nullptr) {
+		printf("Список пуст\n");
+		return;
+	}
+	node* tmp = cinema_list.head;
+	while (tmp != nullptr) {
+		show_elem(tmp->value);
+		printf("\n");
+		tmp = tmp->next;
+	}
+}
+int main() {
+	node* found;
+	setlocale(LC_ALL, "RUS");
+	int number, index, nomer;
+	char poisk[40];
+	do {
+		printf("Введите, чтобы \n");
+		printf("1 - Добавить элемент в конец списка\n");
+		printf("2 - Добавить элемент в начало списка\n");
+		printf("3 - Удалить последний элемент списка\n");
+		printf("4 - Удалить начальный элемент списка\n");
+		printf("5 - Начать поиска элемента по заданному значению\n");
+		printf("6 - Добавить элемента после найденного\n");
+		printf("7 - Удалить найденный элемент\n");
+		printf("8- Вывести все элементы\n");
+		printf("0 - Закончить работу с программой\n");
+		scanf("%d", &number);
+		if (number == 1) {
+			Cinema* user=new Cinema;
+			*user = add_elm();
+			add_tail(user);
+			printf("Элемент успешно добавлен\n");
+		}
+		if (number == 2) {
+			Cinema* user=new Cinema;
+			*user = add_elm();
+			add_head(user);
+			printf("Элемент успешно добавлен\n");
+		}
+		if (number == 3) {
+			del_tail();
+			printf("Элемент успешно удален\n");
+		}
+		if (number == 4) {
+			del_head();
+			printf("Элемент успешно удален\n");
+		}
+		if (number == 5) {
+			printf("Введите элемент, который необходимо найти(фильм)\n");
+			scanf("%s", &poisk);
+			found = search(poisk);
+			if (found == nullptr) {
+				printf("Элемент не найден\n");
+			}
+			else {
+				show_elem(found->value);
+				printf("\n");
+			}
+		}
+		if (number == 6) {
+			printf("Введите элемент, который необходимо найти(фильм)\n");
+			scanf("%s", &poisk);
+			Cinema* user=new Cinema;
+			*user = add_elm();
+			add_after(poisk, user);
+		}
+		if (number == 7) {
+			printf("Введите элемент, который необходимо найти(фильм)\n");
+			scanf("%s", &poisk);
+			del_after(poisk);
+		}
+		if (number == 8) {
+			show_all();
+		}
+	}while (number != 0);
+printf("Спасибо за использование программы :)\n");
+}

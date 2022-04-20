@@ -1,0 +1,67 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <locale.h>
+#define SIZE 14
+int q, p, i, k, temp = 0, end, start;
+int nodes[SIZE][SIZE] = { {0} };//массив вершин
+bool visited [SIZE];//массив посещенных вершин
+int ways[SIZE];//массив родительских вершин
+void search(int tmp){//рекурсивная функция поиска
+    for (int i = 0; i < SIZE; i++)
+        if (!visited[i] && nodes[tmp][i] == 1){//если остались непосещенные соседние вершины
+            ways[i] = tmp;//записываем их в массив родительских вершин
+            visited[i] = true;//вершина отмечается посещенной
+            search(i);//вызов функция в функции
+        }
+}
+int main(int argc, const char* argv[]) {
+    for (int i = 0; i < SIZE; i++) {
+        visited[i] = false;//отмечаем все вершины как непосещенные
+    }
+    setlocale(LC_ALL, "");
+    FILE* f = fopen("C:/Users/Юлия/Documents/Институт/ОСА_ДВ/Лр/Лр 7/f.txt", "r");//считываем связи графа из файла
+    if (f == NULL) return -1;//если не удалось считать файл
+    for (int i = 0; i < 30; i++)
+    {
+        fscanf(f, "%d %d %d", &p, &temp, &q);
+        nodes[p - 1][q - 1] = temp;//считываем данные о вершинах в массив вершин
+        nodes[q - 1][p - 1] = temp;
+    }
+    fclose(f);
+    printf("Из какой вершины начинается путь? \n");
+    scanf("%d", &start);
+    start = start - 1;//начальная вершина
+    int end = 0;
+    printf("До какой точки рассчитать маршрут? \n");
+    scanf("%d", &end);//конечная вершина
+    end = end - 1;
+    visited[start] = true;//начальная вершина пути отмечается посещенной
+    ways[start] = -1;
+    search(start);//вызов функции поиска в глубину
+    int dne = end;
+    int count = 0;
+    do {
+        count++;
+        dne = ways[dne];//считаем кол-во переходов между начальной и конечной вершинами
+    } while (dne != ways[start]);
+    int* rev = new int[count];
+    int i = 0;
+    rev[i] = end;
+    i++;
+    do {//восстанавливаем путь из родительских вершин
+        rev[i] = ways[end];
+        i++;
+        end = ways[end];
+    } while (end != start);
+    i--;
+    FILE* s = fopen("C:\\Users\\Юлия\\Documents\\Институт\\ОСА_ДВ\\Лр\\ЛР 8/s.txt", "w");//записываем полученный путь в файл
+    fprintf(s, "Путь:\n");
+    while (i >= 0)//восстанавливаем путь в правильной последовательности
+    {
+        fprintf(s,"%d ",rev[i]+1);
+        i--;
+    }
+    fprintf(s,"\n");
+    fclose(s);
+    return 0;
+}

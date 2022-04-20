@@ -1,0 +1,98 @@
+#include <string>
+#define SIZE 14
+int q, p, i, k, temp = 0, end, start;
+struct node {//структура вершины
+    int value;
+    node* next;
+};
+class Stack {//объявление класса стек
+    node* head;//"голова" стека
+public:
+    Stack() :head(0) {} // конструктор
+    void push(int value) { // функция добавление элемента в стек
+        node* temp = new node;
+        temp->value = value;
+        if (head != NULL) {//добавление элемента в случае, если голова отсутствует
+            temp->next = head;
+        }
+        head = temp;
+    }
+    bool empty() {//функция очищения головы стека
+        return head == NULL;
+    }
+    int pop() { //функция извлечение элемента стека
+        node* temp;
+        int value;
+        if (head == NULL) {//если у стека отсвутствует голова - стек пустой
+            printf("Стек пуст");
+        }
+        else {//добавляем новую вершину и указатель на следующую
+            temp = head;
+            head = head->next;
+            value = temp->value;
+            delete temp;
+        }
+        return value;
+    }
+};
+int nodes[SIZE][SIZE];
+void search(int start, int end) {//основная функция поиска в глубину
+    FILE* d = fopen("C:\\Users\\Юлия\\Documents\\Институт\\ОСА_ДВ\\Лр\\ЛР 8/d.txt", "w");
+    fprintf(d, "Путь:\n");
+    Stack s;
+    bool* visited = new bool[SIZE];//посещенные вершины (true/false)
+    for (int i = 0; i < SIZE; i++) {
+        visited[i] = false;//помечаем все вершины, как непосещенные
+    }
+    s.push(start);
+    visited[start] = true;//первая вершина-посещенная
+    if (start == end) {//если вершина = искомой - выход
+        return;
+    }
+    while (!s.empty()) {
+        int k = s.pop();//извлекаем вершины
+        printf(" %d", k + 1);//выводим конечную вершину
+        fprintf(d, "%d ", k + 1);//записываем конечную вершину в файл
+        if (k == end) {
+            break;
+        }
+        for (int i = SIZE-1; i >= 0; i--) {
+            if (nodes[k][i] == 1 && !visited[i]) {//проходим по соседним вершинам
+                s.push(i);
+                visited[i] = true;//отмечаем вершину, как посещенную
+            }
+        }
+
+    }
+    delete[] visited;//убираем отметки о посещении вершин
+    fclose(d);
+}
+int main(int argc, const char* argv[]) {
+
+    int arr[SIZE][SIZE] = { {0} };
+    setlocale(LC_ALL, "");
+    FILE* f = fopen("C:/Users/Юлия/Documents/Институт/ОСА_ДВ/Лр/Лр 7/f.txt", "r");//считываем связи графа из файла
+    if (f == NULL) return -1;//если не удалось считать файл
+    for (int i = 0; i < 30; i++)
+    {
+        fscanf(f, "%d %d %d", &p, &temp, &q);
+        arr[p - 1][q - 1] = temp;//считываем данные о вершинах в массив вершин
+        arr[q - 1][p - 1] = temp;
+    }
+    fclose(f);
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            nodes[i][j] = arr[i][j];
+        }
+    }
+    printf("Из какой вершины начинается путь? \n");
+    scanf("%d", &start);
+    start = start - 1;//начальная вершина
+    int end=0;
+    printf("До какой точки рассчитать маршрут? \n");
+    scanf("%d",&end);//конечная вершина
+    end = end - 1;
+    search(start,end);//вызов функции поиска в глубину
+
+    return 0;
+}
